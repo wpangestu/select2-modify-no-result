@@ -44,6 +44,7 @@ class Home extends BaseController
 		$db = \Config\Database::connect();
 
 		$name = $request->getVar('name');
+		$el = $request->getVar('elemen');
 
 		$data = [
 			"first_name" => $name,
@@ -69,7 +70,8 @@ class Home extends BaseController
 
 		$result = [
 			"status" => $status,
-			"data" => $data
+			"data" => $data,
+			"elemen" => $el
 		];
 
 		echo json_encode($result);

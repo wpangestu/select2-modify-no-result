@@ -29,13 +29,14 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLiveLabel">Modal title</h5>
+        <h5 class="modal-title" id="exampleModalLiveLabel">Modal Add</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
     <form action="#" method="post" id="form_quick_add_supplier">
+            <input type="hidden" name="elemen" id="idElemen">
           <div class="form-group">
             <label for="md_inputName">Name</label>
             <input required type="text" name="name" class="form-control" id="md_inputName">
@@ -55,7 +56,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="submit" class="btn btn-primary">Save changes</button>
+        <button type="submit" class="btn btn-primary">Save</button>
       </div>
     </form>
     </div>
@@ -67,6 +68,9 @@
 <script src="/select2/js/select2.full.min.js"></script>
 <script>
     $(document).ready(function(){
+
+      // Select2 Modify No Result
+      // Select2 Default
         $('#selectName').select2({
             placeholder: 'Search name',
             language: {
@@ -76,7 +80,7 @@
                     .dropdown.$search.val();
                 if(!name==""){
                   return (
-                        '<button type="button" data-name="' +
+                        '<button type="button" data-id_elemen="#selectName" data-name="' +
                         name +
                           '" class="btn btn-link quick_add_supplier"><i class="fa fa-plus-circle fa-lg" aria-hidden="true"></i>Tambahkan '+name+'</button>'
                     );
@@ -90,8 +94,10 @@
 
         $(document).on('click','.quick_add_supplier',function(){
           const text = $(this).data('name');
-          $('#selectName').select2('close');
+          const id_el = $(this).data('id_elemen');
+          $(id_el).select2('close');
           $('#modal_add').find('#md_inputName').val(text);
+          $('#modal_add').find('#idElemen').val(id_el);
           $('#modal_add').modal('show')
         })
 
@@ -108,7 +114,7 @@
             success: function(result) {
               if(result.status){
                   const newOption = new Option(result.data.name,result.data.id,true,true);
-                  $('#selectName').append(newOption).trigger('change');
+                  $(result.elemen).append(newOption).trigger('change');
                   $('#modal_add').modal('hide');
               }else{
                 alert("something wrong")
@@ -121,13 +127,15 @@
           $('#form_quick_add_supplier')[0].reset();
         })
 
+
+      // Select2 Modify No Result
+      // Select2 with Ajax & Infinty Scroll
         $('#selectNameAjax').select2({
             ajax: {
                 url: "/home/json",
                 dataType: 'json',
                 delay: 250,
                 data: function (params) {
-                    // console.log()
                     return {
                         q: params.term, // search term
                         page: params.page||1
@@ -152,7 +160,24 @@
                 // cache: true
             },
             placeholder: 'Search name',
+            language: {
+            noResults: function() {
+                var name = $('#selectNameAjax')
+                    .data('select2')
+                    .dropdown.$search.val();
+                if(!name==""){
+                  return (
+                        '<button type="button" data-id_elemen="#selectNameAjax" data-name="' +
+                        name +
+                          '" class="btn btn-link quick_add_supplier"><i class="fa fa-plus-circle fa-lg" aria-hidden="true"></i>Add '+name+'</button>'
+                    );
+                    }
+                },
+            },
+            escapeMarkup: function(markup) {
+                return markup;
+            }
         });
-    })
+    });
 </script>
 <?= $this->endSection() ?>
