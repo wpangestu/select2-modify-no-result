@@ -4,3 +4,5 @@ I'm just modify the [select2](http://select2.org) library, when the data what we
 
 ## Here is the demo
 ![](demo.gif)
+
+I made this using [Codeigniter 4](https://codeigniter.org) Framework, and also I'm implement select2 using ajax data source and Infinity Scroll
