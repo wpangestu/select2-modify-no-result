@@ -82,7 +82,7 @@
                   return (
                         '<button type="button" data-id_elemen="#selectName" data-name="' +
                         name +
-                          '" class="btn btn-link quick_add_supplier"><i class="fa fa-plus-circle fa-lg" aria-hidden="true"></i>Tambahkan '+name+'</button>'
+                          '" class="btn btn-link quick_add_supplier"><i class="fa fa-plus-circle fa-lg" aria-hidden="true"></i>Add '+name+'</button>'
                     );
                     }
                 },
